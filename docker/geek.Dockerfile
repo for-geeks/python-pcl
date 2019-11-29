@@ -21,11 +21,8 @@ RUN apt install -y cmake wget \
     build-essential python3.6 python3.6-dev python3-pip python3.6-venv \
     git \
     openni2-utils \
-    #libvtk7-dev vtk7 libvtk7.1 \
     libpcl-dev
 
-# fork module
-#RUN git clone -b rc_patches4 https://github.com/Sirokujira/python-pcl.git
 # main
 #RUN git clone -b master https://github.com/strawlab/python-pcl.git
 RUN git clone -b master https://github.com/mickeyouyou/python-pcl
