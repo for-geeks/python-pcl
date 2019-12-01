@@ -1,4 +1,4 @@
-Introduction
+For Geeks Python PCL Introduction
 ============
 
 This is a small python binding to the `pointcloud <http://pointclouds.org/>`_ library.
@@ -58,7 +58,20 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 
 ## Quick start
 
+1. Pull and build docker container on your local computer.
 ```bash
 cd docker
 bash start_geek.sh
 ```
+
+2. Into docker container and run an example :
+
+```bash
+
+cd docker
+bash into_geek.sh
+# run example by keypoint
+python3 examples/3dharris.py
+```
+
+![image alt text](docs/images/bunny_keypoint.png)
