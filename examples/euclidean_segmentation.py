@@ -5,25 +5,28 @@ import pcl.pcl_visualization
 
 
 def main():
-    cloud = pcl.load(
-            './examples/pcldata/tutorials/table_scene_lms400.pcd')
+    cloud = pcl.load('/python-pcl/examples/pcldata/tutorials/table_scene_lms400.pcd')
     print("cloud points : " + str(cloud.size))
 
     vg = cloud.make_voxel_grid_filter()
-    vg.set_leaf_size(0.01, 0.01, 0.01)
+    vg.set_leaf_size(0.0029, 0.0029, 0.0029)
     cloud_filtered = vg.filter()
+    print('point size after voxel_grid_filter: ' + str(cloud_filtered.size))
+    # cloud_filtered = pcl.PointCloud(cloud_filtered_blob.to_array())
+    # print('PointCloud after filtering: ' +
+    #       str(cloud_filtered.width * cloud_filtered.height) + ' data points.')
     tree = cloud_filtered.make_kdtree()
 
     segment = cloud_filtered.make_EuclideanClusterExtraction()
-    segment.set_ClusterTolerance(0.02)
+    segment.set_ClusterTolerance(0.005)
     segment.set_MinClusterSize(100)
     segment.set_MaxClusterSize(25000)
     segment.set_SearchMethod(tree)
     cluster_indices = segment.Extract()
 
-    cloud_cluster = pcl.PointCloud()
+    # print(cluster_indices)
 
-    # print('cluster_indices : ' + str(cluster_indices.count) + " count.")
+    print('cluster_indices : ' + str(len(cluster_indices)) + " count.")
     cloud_cluster = pcl.PointCloud()
     for j, indices in enumerate(cluster_indices):
         # print('indices = ' + str(len(indices)))
@@ -34,6 +37,12 @@ def main():
             points[i][2] = cloud_filtered[indice][2]
 
         cloud_cluster.from_array(points)
+        # print(points)
+
+    # print(cloud_cluster)
+
+    # for point in enumerate(cloud_cluster):
+        # print(point)
 
 
 

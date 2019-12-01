@@ -17,7 +17,7 @@ def main():
     # reader.read ("table_scene_lms400.pcd", *cloud_blob);
     # std::cerr << "PointCloud before filtering: " << cloud_blob->width * cloud_blob->height << " data points." << std::endl;
     cloud_blob = pcl.load(
-        './examples/pcldata/tutorials/table_scene_lms400.pcd')
+        '/python-pcl/examples/pcldata/tutorials/table_scene_lms400.pcd')
     print("PointCloud before filtering: " +
           str(cloud_blob.width * cloud_blob.height) + " data points.")
 
@@ -33,7 +33,7 @@ def main():
     # Convert to the templated PointCloud
     # pcl::fromPCLPointCloud2 (*cloud_filtered_blob, *cloud_filtered);
     # std::cerr << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height << " data points." << std::endl;
-    cloud_filtered = pcl.PCLPointCloud2(cloud_filtered_blob.to_array())
+    cloud_filtered = pcl.PointCloud(cloud_filtered_blob.to_array())
     print('PointCloud after filtering: ' +
           str(cloud_filtered.width * cloud_filtered.height) + ' data points.')
 

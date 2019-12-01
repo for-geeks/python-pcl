@@ -11,7 +11,7 @@ def main():
     #   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
     #   reader.read ("table_scene_lms400.pcd", *cloud);
     #   std::cout << "PointCloud before filtering has: " << cloud->points.size () << " data points." << std::endl; //*
-    cloud = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
+    cloud = pcl.load('/python-pcl/examples/pcldata/tutorials/table_scene_lms400.pcd')
 
     #   // Create the filtering object: downsample the dataset using a leaf size of 1cm
     #   pcl::VoxelGrid<pcl::PointXYZ> vg;
@@ -21,7 +21,7 @@ def main():
     #   vg.filter (*cloud_filtered);
     #   std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
     vg = cloud.make_voxel_grid_filter()
-    vg.set_leaf_size(0.01, 0.01, 0.01)
+    vg.set_leaf_size(0.0029, 0.0029, 0.0029)
     cloud_filtered = vg.filter()
 
     #   // Create the segmentation object for the planar model and set all the parameters
@@ -100,13 +100,13 @@ def main():
     # ec.setInputCloud (cloud_filtered);
     # ec.extract (cluster_indices);
     ec = cloud_filtered.make_EuclideanClusterExtraction()
-    ec.set_ClusterTolerance(0.02)
+    ec.set_ClusterTolerance(0.005)
     ec.set_MinClusterSize(100)
     ec.set_MaxClusterSize(25000)
     ec.set_SearchMethod(tree)
     cluster_indices = ec.Extract()
 
-    print('cluster_indices : ' + str(cluster_indices.count) + " count.")
+    print('cluster_indices : ' + str(len(cluster_indices)) + " count.")
     # print('cluster_indices : ' + str(cluster_indices.indices.max_size) + " count.")
 
     #   int j = 0;
@@ -128,6 +128,7 @@ def main():
     #
 
     cloud_cluster = pcl.PointCloud()
+    cloud_output = []
 
     for j, indices in enumerate(cluster_indices):
         # cloudsize = indices
@@ -145,8 +146,8 @@ def main():
             points[i][2] = cloud_filtered[indice][2]
 
         cloud_cluster.from_array(points)
-        ss = "cloud_cluster_" + str(j) + ".pcd"
-        pcl.save(cloud_cluster, ss)
+        # ss = "cloud_cluster_" + str(j) + ".pcd"
+        # pcl.save(cloud_cluster, ss)
 
 
 if __name__ == "__main__":
