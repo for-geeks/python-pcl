@@ -74,4 +74,4 @@ bash into_geek.sh
 python3 examples/3dharris.py
 ```
 
-![image alt text](docs/images/bunny_keypoint.png)
+![image alt text](docs/image/bunny_keypoint.png)
