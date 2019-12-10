@@ -4,7 +4,7 @@
 #   ./build_geek.sh geek.Dockerfile
 
 ARCH=$(uname -m)
-IMG=geekstyle/geek_lite:geek_pcl-x86_64-18.04-20191129_1743
+IMG=geekstyle/geek_lite:geek_pcl-x86_64-18.04-20191210_1818
 
 GEEK_ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
@@ -45,7 +45,7 @@ function main(){
         exit 1
     fi
 
-    GEEK_DOCKER="geek_${USER}"
+    GEEK_DOCKER="geek_pcl_${USER}"
     docker ps -a --format "{{.Names}}" | grep "$GEEK_DOCKER" 1>/dev/null
     if [ $? == 0 ]; then
         docker stop $GEEK_DOCKER 1>/dev/null

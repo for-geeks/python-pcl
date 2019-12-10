@@ -10,7 +10,7 @@ xhost +local:root 1>/dev/null 2>&1
 if [ ${ARCH} == "x86_64" ]; then
     docker exec \
         -u $USER \
-        -it geek_$USER \
+        -it geek_pcl_$USER \
         /bin/bash
 elif [ ${ARCH} == "aarch64" ]; then
     warning "!!! For the first time after starting the Cyber RT container, please run the following two commands: !!!"
@@ -18,7 +18,7 @@ elif [ ${ARCH} == "aarch64" ]; then
     warning "!!!   2) su $USER !!!"
     warning "! To exit, please use 'ctrl+p ctrl+q' !"
 
-    docker attach geek_$USER
+    docker attach geek_pcl_$USER
 
 else
     echo "Unknown architecture: ${ARCH}"
