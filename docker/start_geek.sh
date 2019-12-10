@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Usage:
-#   ./build_geek_pcl.sh geek.Dockerfile
+#   ./build_geek.sh geek.Dockerfile
 
 ARCH=$(uname -m)
 IMG=geekstyle/geek_lite:geek_pcl-x86_64-18.04-20191129_1743
@@ -10,7 +10,7 @@ GEEK_ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 function local_volumes() {
     # Apollo root and bazel cache dirs are required.
-    volumes="-v $GEEK_ROOT_DIR:/python_pcl \
+    volumes="-v $GEEK_ROOT_DIR:/python-pcl \
              -v $HOME/.cache:${DOCKER_HOME}/.cache"
     case "$(uname -s)" in
         Linux)
@@ -95,7 +95,7 @@ function main(){
         -e OMP_NUM_THREADS=1 \
         $(local_volumes) \
         --net host \
-        -w /python_pcl \
+        -w /python-pcl \
         --add-host in_geek_docker:127.0.0.1 \
         --add-host ${LOCAL_HOST}:127.0.0.1 \
         --hostname in_geek_docker \
@@ -112,7 +112,7 @@ function main(){
 
     if [ ${ARCH} == "x86_64" ]; then
         if [ "${USER}" != "root" ]; then
-            docker exec $GEEK_DOCKER bash -c 'docker_adduser.sh'
+            docker exec $GEEK_DOCKER bash -c 'docker/docker_adduser.sh'
         fi
     else
         echo "!!! Due to the problem with 'docker exec' on Drive PX platform, please run 'docker_adduser.sh' for the first time when you get into the docker !!!"
