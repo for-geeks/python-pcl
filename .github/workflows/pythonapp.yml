@@ -1,0 +1,15 @@
+name: Geek Style
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: docker pull and build 
+      run: bash docker/start_geek.sh
+    - name: docker exec 
+      run: ll tests/*.py | xargs -n 1 python3
