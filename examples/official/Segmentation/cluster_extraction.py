@@ -134,20 +134,22 @@ def main():
         # cloudsize = indices
         print('indices = ' + str(len(indices)))
         # cloudsize = len(indices)
-        points = np.zeros((len(indices), 3), dtype=np.float32)
+        # points = np.zeros((len(indices), 3), dtype=np.float32)
         # points = np.zeros((cloudsize, 3), dtype=np.float32)
 
         # for indice in range(len(indices)):
         for i, indice in enumerate(indices):
             # print('dataNum = ' + str(i) + ', data point[x y z]: ' + str(cloud_filtered[indice][0]) + ' ' + str(cloud_filtered[indice][1]) + ' ' + str(cloud_filtered[indice][2]))
             # print('PointCloud representing the Cluster: ' + str(cloud_cluster.size) + " data points.")
-            points[i][0] = cloud_filtered[indice][0]
-            points[i][1] = cloud_filtered[indice][1]
-            points[i][2] = cloud_filtered[indice][2]
+            # points[i][0] = cloud_filtered[indice][0]
+            # points[i][1] = cloud_filtered[indice][1]
+            # points[i][2] = cloud_filtered[indice][2]
 
-        cloud_cluster.from_array(points)
-        # ss = "cloud_cluster_" + str(j) + ".pcd"
-        # pcl.save(cloud_cluster, ss)
+            cloud_output.append([cloud_filtered[indice][0], cloud_filtered[indice][1], cloud_filtered[indice][2]])
+
+    cloud_cluster.from_list(cloud_output)
+    # ss = "cloud_cluster_" + str(j) + ".pcd"
+    pcl.save(cloud_cluster, 'cluster_extraction.pcd')
 
 
 if __name__ == "__main__":
