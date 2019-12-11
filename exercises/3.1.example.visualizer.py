@@ -6,9 +6,13 @@ import numpy as np
 
 def main():
 
-    cloud = pcl.load('/python_pcl/apollo_scape_pcd/333.pcd')
+    cloud = pcl.load('/python-pcl/apollo_scape_pcd/333.pcd')
     print("cloud points : " + str(cloud.size))
 
+    visualizer(cloud)
+
+
+def visualizer(cloud):
     viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
     pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(
         cloud, 255, 255, 255)
