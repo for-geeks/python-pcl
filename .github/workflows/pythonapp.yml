@@ -12,5 +12,4 @@ jobs:
     - name: docker pull and build 
       run: bash docker/start_geek.sh
     - name: docker exec 
-      #run: grep -l test tests/*.py | xargs -n 1 python3
-      run: python3 tests/test_segmentation.py
+      run: docker exec -u $USER geek_pcl_$USER bash -c "grep -l test tests/*.py | xargs -n 1 python3"
