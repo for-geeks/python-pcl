@@ -61,9 +61,13 @@ class TestConditionalRemoval(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
         # self.p = pcl.PointCloud(_data)
+
         self.p = pcl.PointCloud(_data2)
-        self.fil = self.p.make_ConditionalRemoval()
-        self.fil.set_Condition(pcl.ConditionAnd())
+        range_cond = self.p.make_ConditionAnd()
+        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.GT, 0.0)
+        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.LT, 0.8)
+        self.fil = self.p.make_ConditionalRemoval(range_cond)
+        # self.fil.set_Condition(pcl.ConditionAnd())
 
     # result
     # nan nan nan
@@ -72,9 +76,6 @@ class TestConditionalRemoval(unittest.TestCase):
     # nan nan nan
     # 0.908514 -0.598159 0.744714
     def test_Condition(self):
-        range_cond = self.p.make_ConditionAnd()
-        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.GT, 0.0)
-        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.LT, 0.8)
         # build the filter
         self.fil.set_KeepOrganized(True)
         # apply filter
