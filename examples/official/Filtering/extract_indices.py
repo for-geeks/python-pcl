@@ -40,7 +40,7 @@ def main():
     # Write the downsampled version to disk
     # pcl::PCDWriter writer;
     # writer.write<pcl::PointXYZ> ("table_scene_lms400_downsampled.pcd", *cloud_filtered, false);
-    pcl.save("table_scene_lms400_downsampled.pcd", cloud_filtered)
+    pcl.save(cloud_filtered, "table_scene_lms400_downsampled.pcd")
 
     # pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
     # pcl::PointIndices::Ptr inliers (new pcl::PointIndices ());
