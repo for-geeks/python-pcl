@@ -100,9 +100,9 @@ def main():
     # ec.setInputCloud (cloud_filtered);
     # ec.extract (cluster_indices);
     ec = cloud_filtered.make_EuclideanClusterExtraction()
-    ec.set_ClusterTolerance(0.005)
-    ec.set_MinClusterSize(100)
-    ec.set_MaxClusterSize(25000)
+    ec.set_ClusterTolerance(0.03)
+    ec.set_MinClusterSize(200)
+    ec.set_MaxClusterSize(5000)
     ec.set_SearchMethod(tree)
     cluster_indices = ec.Extract()
 
@@ -128,7 +128,7 @@ def main():
     #
 
     cloud_cluster = pcl.PointCloud()
-    cloud_output = []
+
 
     for j, indices in enumerate(cluster_indices):
         # cloudsize = indices
@@ -136,7 +136,7 @@ def main():
         # cloudsize = len(indices)
         # points = np.zeros((len(indices), 3), dtype=np.float32)
         # points = np.zeros((cloudsize, 3), dtype=np.float32)
-
+        cloud_output = []
         # for indice in range(len(indices)):
         for i, indice in enumerate(indices):
             # print('dataNum = ' + str(i) + ', data point[x y z]: ' + str(cloud_filtered[indice][0]) + ' ' + str(cloud_filtered[indice][1]) + ' ' + str(cloud_filtered[indice][2]))
@@ -146,10 +146,9 @@ def main():
             # points[i][2] = cloud_filtered[indice][2]
 
             cloud_output.append([cloud_filtered[indice][0], cloud_filtered[indice][1], cloud_filtered[indice][2]])
-
-    cloud_cluster.from_list(cloud_output)
-    # ss = "cloud_cluster_" + str(j) + ".pcd"
-    pcl.save(cloud_cluster, 'cluster_extraction.pcd')
+        cloud_cluster.from_list(cloud_output)
+        ss = "cloud_cluster_" + str(j) + ".pcd"
+        pcl.save(cloud_cluster, ss)
 
 
 if __name__ == "__main__":
