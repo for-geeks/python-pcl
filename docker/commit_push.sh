@@ -11,7 +11,7 @@ TIME=$(date +%Y%m%d_%H%M)
 
 TAG="${REPO}:geek_pcl-${ARCH}-18.04-${TIME}"
 
-CONTAINER_ID=$(docker ps | grep geek_${USER}| awk '{print $1}')
+CONTAINER_ID=$(docker ps | grep geek_pcl_${USER}| awk '{print $1}')
 
 docker commit "$CONTAINER_ID" "$TAG"
 # docker tag "$TAG" "$RELEASE_NAME"
