@@ -30,7 +30,7 @@ def main():
     cloud_filtered = stat_filter.filter()
     print('point size after statistical_outlier_filter: ' + str(cloud_filtered.size))
 
-    # ROI Filter
+    # TODO 1 ROI Filter
     points = []
     for i in range(cloud_filtered.size):
         # Radius filter
@@ -54,7 +54,7 @@ def main():
     print("cloud_2d points : " + str(cloud_2d.size))
     # pcl.save(cloud_2d, 'cloud_2d'+str(time.time())+'.pcd')
     # exit(0)
-
+    # TODO2: Segmentation 
     cluster_indices = get_clusters(cloud_2d, tolerance = 0.65, min_size = 50, max_size = 3500)
 
     print('cluster_indices : ' + str(len(cluster_indices)) + ' count.')
@@ -73,9 +73,6 @@ def main():
                 ])
 
         print('cluster size:' + str(len(cluster_points)))
-        cluster_cloud = pcl.PointCloud_PointXYZRGB()
-        cluster_cloud.from_list(cluster_points)
-        pcl.save(cluster_cloud, str(j) + '.pcd')
         color_cluster_point_list.append(cluster_points)
 
     #Create new cloud containing all clusters, each with unique color
@@ -91,9 +88,9 @@ def main():
     #         pcl.save(cluster_cloud, str(cluster_index) + '.pcd')
     #         viewer.ShowColorCloud(cluster_cloud)
 
-        # v = True
-        # while v:
-        #     v = not(viewer.WasStopped())
+    #     v = True
+    #     while v:
+    #         v = not(viewer.WasStopped())
 
 
 def gray_visualizer(cloud):
