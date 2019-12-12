@@ -13,5 +13,3 @@ jobs:
       run: bash docker/start_geek.sh
     - name: docker exec test_segmentation
       run: docker exec -u runner geek_pcl_runner bash -c "python3 tests/test_segmentation.py"
-    - name: docker exec filter
-      run: docker exec -u runner geek_pcl_runner bash -c "python3 tests/test_filters.py"
