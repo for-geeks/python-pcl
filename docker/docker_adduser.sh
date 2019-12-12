@@ -7,6 +7,7 @@ usermod -aG sudo "$DOCKER_USER"
 echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 cp -r /etc/skel/. /home/${DOCKER_USER}
 echo 'ulimit -c unlimited' >> "/home/${DOCKER_USER}/.bashrc"
+echo 'export PYTHONPATH=/python-pcl/scripts:$PYTHONPATH' >> "/home/${DOCKER_USER}/.bashrc"
 
 # Set user files ownership to current user, such as .bashrc, .profile, etc.
 chown ${DOCKER_USER}:${DOCKER_GRP} /home/${DOCKER_USER}

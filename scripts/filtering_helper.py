@@ -5,6 +5,15 @@ import pcl
 
 from pcl_helper import *
 
+
+def statistical_outlier(cloud):
+    stat_filter = cloud.make_statistical_outlier_filter()
+    stat_filter.set_mean_k(20)
+    stat_filter.set_std_dev_mul_thresh(0.3)
+    filtered_cloud = stat_filter.filter()
+
+    return filtered_cloud
+
 # Returns Downsampled version of a point cloud
 # The bigger the leaf size the less information retained
 def do_voxel_grid_filter(point_cloud, LEAF_SIZE = 0.01):
