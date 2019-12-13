@@ -8,7 +8,6 @@ import pcl
 import pcl.pcl_visualization
 
 from pcl_helper import get_color_list
-from pcl_helper import rgb_to_float
 from filtering_helper import do_ransac_plane_segmentation
 from clustering import get_clusters
 
@@ -39,61 +38,68 @@ def main():
         if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5 and r < 10.0:
             points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
 
-    cloud_2d = pcl.PointCloud()
-    cloud_2d.from_list(points)
+    cloud_input = pcl.PointCloud()
+    cloud_input.from_list(points)
 
     # Ransac plane segmentation
-    # plane_cloud, cloud_2d = do_ransac_plane_segmentation(cloud_2d, max_distance = 0.01)
+    # plane_cloud, cloud_input = do_ransac_plane_segmentation(cloud_input, max_distance = 0.01)
 
-    # print('object_cloud size %s' % cloud_2d.size)
+    # print('object_cloud size %s' % cloud_input.size)
     # print('plane_cloud size %s' % plane_cloud.size)
 
-    # gray_visualizer(cloud_2d)
+    gray_visualizer(cloud_input)
     # gray_visualizer(plane_cloud)
 
-    print("cloud_2d points : " + str(cloud_2d.size))
-    # pcl.save(cloud_2d, 'cloud_2d'+str(time.time())+'.pcd')
+    print("cloud_input points : " + str(cloud_input.size))
+    # pcl.save(cloud_input, 'cloud_input'+str(time.time())+'.pcd')
     # exit(0)
 
-    cluster_indices = get_clusters(cloud_2d, tolerance = 0.65, min_size = 50, max_size = 3500)
+    cluster_indices = get_clusters(cloud_input, tolerance = 0.65, min_size = 30, max_size = 3500)
 
     print('cluster_indices : ' + str(len(cluster_indices)) + ' count.')
     cluster_color = get_color_list(len(cluster_indices))
-    print(cluster_color)
 
-    color_cluster_point_list = []
+    viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+    # color_cluster_point_list = []
     for j, indices in enumerate(cluster_indices):
         cluster_points = []
+        min_x = 0
+        max_x = 0
+        min_y = 0
+        max_y = 0
+        min_z = 0
+        max_z = 0
         for i, indice in enumerate(indices):
             cluster_points.append([
-                cloud_2d[indice][0],
-                cloud_2d[indice][1],
-                cloud_2d[indice][2],
-                rgb_to_float(cluster_color[j])
-                ])
+                cloud_input[indice][0],
+                cloud_input[indice][1],
+                cloud_input[indice][2]])
+
+            if cloud_input[indice][0] < min_x: min_x = cloud_input[indice][0]
+            if cloud_input[indice][1] < min_y: min_y = cloud_input[indice][1]
+            if cloud_input[indice][2] < min_z: min_z = cloud_input[indice][2]
+
+            if cloud_input[indice][0] > max_x: max_x = cloud_input[indice][0]
+            if cloud_input[indice][1] > max_y: max_y = cloud_input[indice][1]
+            if cloud_input[indice][2] > max_z: max_z = cloud_input[indice][2]
 
         print('cluster size:' + str(len(cluster_points)))
-        cluster_cloud = pcl.PointCloud_PointXYZRGB()
+        cluster_cloud = pcl.PointCloud()
         cluster_cloud.from_list(cluster_points)
-        pcl.save(cluster_cloud, str(j) + '.pcd')
-        color_cluster_point_list.append(cluster_points)
+        # CLOUD RGB COLOR 
+        r = int(cluster_color[j][0])
+        g = int(cluster_color[j][1])
+        b = int(cluster_color[j][2])
+        cluster_pc_color = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+            cluster_cloud, r, g, b)
+        # pcl.save(cluster_cloud, str(j) + '.pcd')
+        viewer.AddPointCloud_ColorHandler(cluster_cloud, cluster_pc_color, 'cloud_cluster:' + str(j))
+        # viewer.AddCube(min_x, max_x, min_y, max_y, min_z, max_z, 255, 255, 255, 'cloud_cluster:' + str(j))
 
-    #Create new cloud containing all clusters, each with unique color
-    print('color_cluster_point_list size :' + str(len(color_cluster_point_list)))
-
-    # if len(color_cluster_point_list) > 0:
-    #     viewer = pcl.pcl_visualization.CloudViewing('3D Viewer')
-        
-    #     for cluster_index, j in enumerate(color_cluster_point_list):
-    #         cluster_cloud = pcl.PointCloud_PointXYZRGB()
-    #         # cluster_cloud.resize(0)
-    #         cluster_cloud.from_list(j)
-    #         pcl.save(cluster_cloud, str(cluster_index) + '.pcd')
-    #         viewer.ShowColorCloud(cluster_cloud)
-
-        # v = True
-        # while v:
-        #     v = not(viewer.WasStopped())
+    v = True
+    while v:
+        v = not(viewer.WasStopped())
+        viewer.SpinOnce()
 
 
 def gray_visualizer(cloud):
@@ -108,10 +114,7 @@ def gray_visualizer(cloud):
     while v:
         v = not(viewer.WasStopped())
         viewer.SpinOnce()
-        # sleep(0.01)
 
 
 if __name__ == "__main__":
-    # import cProfile
-    # cProfile.run('main()', sort='time')
     main()
