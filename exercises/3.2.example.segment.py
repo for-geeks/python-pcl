@@ -54,7 +54,7 @@ def main():
     # pcl.save(cloud_input, 'cloud_input'+str(time.time())+'.pcd')
     # exit(0)
 
-    cluster_indices = get_clusters(cloud_input, tolerance = 0.65, min_size = 50, max_size = 3500)
+    cluster_indices = get_clusters(cloud_input, tolerance = 0.65, min_size = 30, max_size = 3500)
 
     print('cluster_indices : ' + str(len(cluster_indices)) + ' count.')
     cluster_color = get_color_list(len(cluster_indices))
@@ -63,22 +63,38 @@ def main():
     # color_cluster_point_list = []
     for j, indices in enumerate(cluster_indices):
         cluster_points = []
+        min_x = 0
+        max_x = 0
+        min_y = 0
+        max_y = 0
+        min_z = 0
+        max_z = 0
         for i, indice in enumerate(indices):
             cluster_points.append([
                 cloud_input[indice][0],
                 cloud_input[indice][1],
                 cloud_input[indice][2]])
 
+            if cloud_input[indice][0] < min_x: min_x = cloud_input[indice][0]
+            if cloud_input[indice][1] < min_y: min_y = cloud_input[indice][1]
+            if cloud_input[indice][2] < min_z: min_z = cloud_input[indice][2]
+
+            if cloud_input[indice][0] > max_x: max_x = cloud_input[indice][0]
+            if cloud_input[indice][1] > max_y: max_y = cloud_input[indice][1]
+            if cloud_input[indice][2] > max_z: max_z = cloud_input[indice][2]
+
         print('cluster size:' + str(len(cluster_points)))
         cluster_cloud = pcl.PointCloud()
         cluster_cloud.from_list(cluster_points)
+        # CLOUD RGB COLOR 
         r = int(cluster_color[j][0])
         g = int(cluster_color[j][1])
         b = int(cluster_color[j][2])
-        pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+        cluster_pc_color = pcl.pcl_visualization.PointCloudColorHandleringCustom(
             cluster_cloud, r, g, b)
         # pcl.save(cluster_cloud, str(j) + '.pcd')
-        viewer.AddPointCloud_ColorHandler(cluster_cloud, pccolor, 'cloud_cluster:' + str(j))
+        viewer.AddPointCloud_ColorHandler(cluster_cloud, cluster_pc_color, 'cloud_cluster:' + str(j))
+        # viewer.AddCube(min_x, max_x, min_y, max_y, min_z, max_z, 255, 255, 255, 'cloud_cluster:' + str(j))
 
     v = True
     while v:

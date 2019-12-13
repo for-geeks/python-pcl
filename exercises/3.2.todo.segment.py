@@ -54,7 +54,7 @@ def main():
     # pcl.save(cloud_input, 'cloud_input'+str(time.time())+'.pcd')
 
     # TODO 2 Adjust segment parameter 
-    cluster_indices = get_clusters(cloud_input, tolerance = 0.65, min_size = 50, max_size = 3500)
+    cluster_indices = get_clusters(cloud_input, tolerance = 0.65, min_size = 30, max_size = 3500)
 
     print('cluster_indices : ' + str(len(cluster_indices)) + ' count.')
     cluster_color = get_color_list(len(cluster_indices))
