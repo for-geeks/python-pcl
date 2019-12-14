@@ -2,10 +2,10 @@
 # http://pointclouds.org/documentation/tutorials/moment_of_inertia.php#moment-of-inertia
 
 import pcl
-
+import pcl.pcl_visualization
 
 def main():
-    cloud = pcl.load('./examples/pcldata/tutorials/lamppost.pcd')
+    cloud = pcl.load('/python-pcl/examples/pcldata/tutorials/lamppost.pcd')
 
     # 1.8
     # pcl::MomentOfInertiaEstimation <pcl::PointXYZ> feature_extractor;
@@ -50,11 +50,11 @@ def main():
     # viewer->addPointCloud<pcl::PointXYZ> (cloud, "sample cloud");
     # viewer->addCube (min_point_AABB.x, max_point_AABB.x, min_point_AABB.y, max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB");
     ###
-    viewer = pcl.visualization.PCLVisualizing()
+    viewer = pcl.pcl_visualization.PCLVisualizering()
     viewer.SetBackgroundColor(0, 0, 0)
-    viewer->InitCameraParameters()
+    # viewer->InitCameraParameters()
     # viewer->AddPointCloud (cloud, 'sample cloud', 0)
-    viewer->AddPointCloud(cloud)
+    # viewer->AddPointCloud(cloud)
     viewer.AddCube(min_point_AABB.x, max_point_AABB.x, min_point_AABB.y,
                    max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB")
 
@@ -78,9 +78,9 @@ def main():
                             middle_vector[1] + mass_center[1], middle_vector[2] + mass_center[2])
     z_axis = pcl.PointCloud(
         minor_vector[0] + mass_center[0], minor_vector[1] + mass_center[1], minor_vector[2] + mass_center[2])
-    viewer.AddLine(center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector")
-    viewer.AddLine(center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector")
-    viewer.AddLine(center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector")
+    viewer.AddLine(center, x_axis, 1.0, 0.0, 0.0, "major eigen vector")
+    viewer.AddLine(center, y_axis, 0.0, 1.0, 0.0, "middle eigen vector")
+    viewer.AddLine(center, z_axis, 0.0, 0.0, 1.0, "minor eigen vector")
 
     # while(!viewer->wasStopped())
     # {
@@ -89,7 +89,7 @@ def main():
     # }
     v = true
     while v:
-        v = not(visual.WasStopped())
+        v = not(viewer.WasStopped())
         # visual.spinOnce (100)
         # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
 

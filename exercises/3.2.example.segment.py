@@ -74,7 +74,6 @@ def main():
                 cloud_input[indice][0],
                 cloud_input[indice][1],
                 cloud_input[indice][2]])
-
             if cloud_input[indice][0] < min_x: min_x = cloud_input[indice][0]
             if cloud_input[indice][1] < min_y: min_y = cloud_input[indice][1]
             if cloud_input[indice][2] < min_z: min_z = cloud_input[indice][2]
@@ -82,10 +81,12 @@ def main():
             if cloud_input[indice][0] > max_x: max_x = cloud_input[indice][0]
             if cloud_input[indice][1] > max_y: max_y = cloud_input[indice][1]
             if cloud_input[indice][2] > max_z: max_z = cloud_input[indice][2]
-
         print('cluster size:' + str(len(cluster_points)))
         cluster_cloud = pcl.PointCloud()
         cluster_cloud.from_list(cluster_points)
+        # mass center
+        # mass_center_point = pcl.PointCloud(min_x + (min_x+max_x)/2, min_y + (min_y+max_y)/2, min_z + (min_z+max_z)/2)
+        # z_axis = pcl.PointCloud(min_x, min_y, min_z)
         # CLOUD RGB COLOR 
         r = int(cluster_color[j][0])
         g = int(cluster_color[j][1])
@@ -94,7 +95,8 @@ def main():
             cluster_cloud, r, g, b)
         # pcl.save(cluster_cloud, str(j) + '.pcd')
         viewer.AddPointCloud_ColorHandler(cluster_cloud, cluster_pc_color, 'cloud_cluster:' + str(j))
-        # viewer.AddCube(min_x, max_x, min_y, max_y, min_z, max_z, 255, 255, 255, 'cloud_cluster:' + str(j))
+        # viewer.AddCube(min_x, max_x, min_y, max_y, min_z, max_z, 1.0, 1.0, 1.0, 'cloud_cluster:' + str(j))
+        # viewer.AddLine(mass_center_point, z_axis, 0.0, 0.0, 1.0, "minor eigen vector")
 
     v = True
     while v:

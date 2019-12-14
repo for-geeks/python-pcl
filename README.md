@@ -1,4 +1,4 @@
-For Geeks Python PCL Introduction
+Python PCL Introduction For Geeks
 ============
 
 This is a small python binding to the `pointcloud <http://pointclouds.org/>`_ library.

@@ -68,7 +68,6 @@ def main():
                 cloud_input[indice][0],
                 cloud_input[indice][1],
                 cloud_input[indice][2]])
-
         print('cluster size:' + str(len(cluster_points)))
         cluster_cloud = pcl.PointCloud()
         cluster_cloud.from_list(cluster_points)
