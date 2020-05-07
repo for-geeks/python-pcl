@@ -15,26 +15,26 @@ def main():
     cloud_filtered = pcl.load('/python-pcl/apollo_scape_pcd/333.pcd')
     print("cloud points : " + str(cloud_filtered.size))
 
-    # Voxel grid filter
-    vg = cloud_filtered.make_voxel_grid_filter()
-    LEAF_SIZE = 0.09
-    vg.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
-    cloud_filtered = vg.filter()
+    # TODO 1 Voxel grid filter
+    # vg = cloud_filtered.make_voxel_grid_filter()
+    # LEAF_SIZE = 0.09
+    # vg.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
+    # cloud_filtered = vg.filter()
     print('point size after voxel_grid_filter: ' + str(cloud_filtered.size))
 
-    # Statistical_outlier_filter
-    stat_filter = cloud_filtered.make_statistical_outlier_filter()
-    stat_filter.set_mean_k(100)
-    stat_filter.set_std_dev_mul_thresh(2.0)
-    cloud_filtered = stat_filter.filter()
+    # TODO 1 Statistical_outlier_filter
+    # stat_filter = cloud_filtered.make_statistical_outlier_filter()
+    # stat_filter.set_mean_k(100)
+    # stat_filter.set_std_dev_mul_thresh(2.0)
+    # cloud_filtered = stat_filter.filter()
     print('point size after statistical_outlier_filter: ' + str(cloud_filtered.size))
 
     # TODO 1 ROI Filter
     points = []
     for i in range(cloud_filtered.size):
-        # Radius filter
+        # TODO 1 Radius filter
         # r = math.sqrt(cloud_filtered[i][0]*cloud_filtered[i][0] + cloud_filtered[i][1]*cloud_filtered[i][1])
-        # ROI filter Passthrough filter
+        # TODO 1 ROI filter Passthrough filter for Ground
         # if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5 and r < 10.0:
             # points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
 
