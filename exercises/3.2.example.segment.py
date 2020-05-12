@@ -29,26 +29,30 @@ def main():
     cloud_filtered = stat_filter.filter()
     print('point size after statistical_outlier_filter: ' + str(cloud_filtered.size))
 
-    # ROI Filter
+    # Ransac for ground plane segmentation
+    plane_cloud, cloud_filtered = do_ransac_plane_segmentation(cloud_filtered, max_distance = 0.2)
+
+    print('object_cloud size: %s' % cloud_filtered.size)
+    print('plane_cloud size: %s' % plane_cloud.size)
+    pcl.save(plane_cloud, 'ground_points_'+str(time.time())+'.pcd')
+
+    #gray_visualizer(cloud_filtered)
+    #gray_visualizer(plane_cloud)
+    #exit(0)
     points = []
     for i in range(cloud_filtered.size):
-        # Radius filter
+        # Ground plane filter
+        # Please think here, why use parameter -1.55?
+        # if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5:
+        #    points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
+
+        # Radius and ROI Filter
         r = math.sqrt(cloud_filtered[i][0]*cloud_filtered[i][0] + cloud_filtered[i][1]*cloud_filtered[i][1])
-        # ROI filter Passthrough filter
-        if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5 and r < 10.0:
+        if r < 10.0:
             points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
 
     cloud_input = pcl.PointCloud()
     cloud_input.from_list(points)
-
-    # Ransac plane segmentation
-    # plane_cloud, cloud_input = do_ransac_plane_segmentation(cloud_input, max_distance = 0.01)
-
-    # print('object_cloud size %s' % cloud_input.size)
-    # print('plane_cloud size %s' % plane_cloud.size)
-
-    gray_visualizer(cloud_input)
-    # gray_visualizer(plane_cloud)
 
     print("cloud_input points : " + str(cloud_input.size))
     # pcl.save(cloud_input, 'cloud_input'+str(time.time())+'.pcd')
@@ -93,7 +97,7 @@ def main():
         b = int(cluster_color[j][2])
         cluster_pc_color = pcl.pcl_visualization.PointCloudColorHandleringCustom(
             cluster_cloud, r, g, b)
-        # pcl.save(cluster_cloud, str(j) + '.pcd')
+        pcl.save(cluster_cloud, str(j) + '.pcd')
         viewer.AddPointCloud_ColorHandler(cluster_cloud, cluster_pc_color, 'cloud_cluster:' + str(j))
         # viewer.AddCube(min_x, max_x, min_y, max_y, min_z, max_z, 1.0, 1.0, 1.0, 'cloud_cluster:' + str(j))
         # viewer.AddLine(mass_center_point, z_axis, 0.0, 0.0, 1.0, "minor eigen vector")

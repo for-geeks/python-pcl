@@ -29,23 +29,26 @@ def main():
     # cloud_filtered = stat_filter.filter()
     print('point size after statistical_outlier_filter: ' + str(cloud_filtered.size))
 
+    # TODO 1 Ransac Ground plane segmentation
+    plane_cloud, cloud_input = do_ransac_plane_segmentation(cloud_input, max_distance = 0.2)
+
+    # print('object_cloud size: %s' % cloud_input.size)
+    # print('plane_cloud size: %s' % plane_cloud.size)
+
     # TODO 1 ROI Filter
     points = []
     for i in range(cloud_filtered.size):
         # TODO 1 Radius filter
-        # r = math.sqrt(cloud_filtered[i][0]*cloud_filtered[i][0] + cloud_filtered[i][1]*cloud_filtered[i][1])
+        r = math.sqrt(cloud_filtered[i][0]*cloud_filtered[i][0] + cloud_filtered[i][1]*cloud_filtered[i][1])
+        if r < 10.0:
+            points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
+
         # TODO 1 ROI filter Passthrough filter for Ground
-        # if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5 and r < 10.0:
-            # points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
+        # if cloud_filtered[i][2] > -1.55 and cloud_filtered[i][2] < 2.5:
+        #    points.append([cloud_filtered[i][0], cloud_filtered[i][1], cloud_filtered[i][2]])
 
     cloud_input = pcl.PointCloud()
     cloud_input.from_list(points)
-
-    # Ransac plane segmentation
-    # plane_cloud, cloud_input = do_ransac_plane_segmentation(cloud_input, max_distance = 0.01)
-
-    # print('object_cloud size %s' % cloud_input.size)
-    # print('plane_cloud size %s' % plane_cloud.size)
 
     gray_visualizer(cloud_input)
     # gray_visualizer(plane_cloud)
